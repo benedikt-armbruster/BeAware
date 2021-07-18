@@ -161,7 +161,7 @@ if __name__ == '__main__':
     if args.export_path is not None:
         save_data = DataSaver(args.export_path).save_to_disk
     else:
-        def save_data(img, data):
+        def save_data(img, poses_3d, poses_2d):
             pass
 
     file_path = args.extrinsics_path
@@ -229,7 +229,6 @@ if __name__ == '__main__':
         if gui_enabled:
             plotter.plot(canvas_3d, poses_3d, edges)
             cv2.imshow(canvas_3d_window_name, canvas_3d)
-
         draw_poses(frame, poses_2d)
         current_time = (cv2.getTickCount() - current_time) / cv2.getTickFrequency()
         if mean_time == 0:
@@ -248,7 +247,7 @@ if __name__ == '__main__':
                             (40, 200 + i * 40), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
         if gui_enabled:
             cv2.imshow('ICV 3D Human Pose Estimation', frame)
-        save_data(frame, orig_poses_3d.tolist())
+        save_data(frame, orig_poses_3d.tolist(), poses_2d.tolist())
 
         key = cv2.waitKey(delay)
         if key == esc_code:

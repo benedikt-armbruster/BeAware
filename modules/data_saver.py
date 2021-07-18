@@ -13,12 +13,12 @@ class DataSaver:
             raise IOError('Path is not a directory')
         self._read_counter_from_disk()
 
-    def save_to_disk(self, img, poses):
+    def save_to_disk(self, img, poses_3d, poses_2d):
         self.counter += 1
         self._write_counter_to_disk()
         img_filename, poses_filename = self._get_file_names()
         with open(poses_filename, 'w') as outfile:
-            json.dump(poses, outfile)
+            json.dump({'poses_3d': poses_3d, 'poses_2d': poses_2d}, outfile)
         cv2.imwrite(img_filename, img)
 
     def _read_counter_from_disk(self):
