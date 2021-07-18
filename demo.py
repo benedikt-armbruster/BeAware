@@ -9,6 +9,7 @@ from modules.input_reader import VideoReader, ImageReader
 from modules.draw import Plotter3d, draw_poses
 from modules.parse_poses import parse_poses
 from modules.data_saver import DataSaver
+from modules.tcp_data_transmitter import DataSender
 
 
 kpt_names = ['neck', 'nose', 'pelvis',
@@ -135,6 +136,9 @@ if __name__ == '__main__':
                         help='Optional. Path to save the annotated images and pose data.',
                         type=str, default=None)
     parser.add_argument('--no-gui', action='store_true', default=False, help='Optional. Disable video preview')
+    parser.add_argument('--port',
+                        help='Optional. Port to expose server for tcp data transmission.',
+                        type=int, default=None)
     args = parser.parse_args()
 
     if args.video == '' and args.images == '':
@@ -157,9 +161,22 @@ if __name__ == '__main__':
         canvas_3d_window_name = 'Canvas 3D'
         cv2.namedWindow(canvas_3d_window_name)
         cv2.setMouseCallback(canvas_3d_window_name, Plotter3d.mouse_callback)
-    
-    if args.export_path is not None:
-        save_data = DataSaver(args.export_path).save_to_disk
+
+    if args.port is not None or args.export_path is not None:
+        if args.port is not None:
+            data_sender = DataSender(port=args.port)
+        else:
+            data_sender = None
+        if args.export_path is not None:
+            data_saver = DataSaver(args.export_path)
+        else:
+            data_saver = None
+
+        def save_data(img, poses_3d, poses_2d):
+            if data_sender is not None:
+                data_sender.send(img, poses_3d, poses_2d)
+            if data_saver is not None:
+                data_saver.save_to_disk(img, poses_3d, poses_2d)
     else:
         def save_data(img, poses_3d, poses_2d):
             pass
@@ -214,7 +231,8 @@ if __name__ == '__main__':
         if len(poses_3d):
             for i, keypoint in enumerate(normalized_pose[0]):
                 if keypoint[3] >= 0:
-                    print(f'{kpt_names[i]}: {keypoint}')
+                    #print(f'{kpt_names[i]}: {keypoint}')
+                    pass
             #print(poses_3d[0].reshape((-1, 4)))
             if gui_enabled:
                 poses_3d = rotate_poses(poses_3d, R, t)
