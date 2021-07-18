@@ -3,7 +3,6 @@ import math
 import cv2
 import numpy as np
 
-
 previous_position = []
 theta, phi = 3.1415/4, -3.1415/6
 should_rotate = False
@@ -94,8 +93,15 @@ def draw_poses(img, poses_2d):
         was_found = pose[2, :] > 0
         for edge in body_edges:
             if was_found[edge[0]] and was_found[edge[1]]:
+                alpha = max(min(pose[2, edge[0]], pose[2, edge[1]]), 0.5)
                 cv2.line(img, tuple(pose[0:2, edge[0]].astype(int)), tuple(pose[0:2, edge[1]].astype(int)),
-                         (255, 255, 0), 4, cv2.LINE_AA)
+                         (255*alpha, 255*alpha, 0), 4, cv2.LINE_AA)
+        labeled = False
         for kpt_id in range(pose.shape[1]):
             if pose[2, kpt_id] != -1:
-                cv2.circle(img, tuple(pose[0:2, kpt_id].astype(int)), 3, (0, 255, 255), -1, cv2.LINE_AA)
+                if not labeled:
+                    labeled = True
+                    cv2.putText(img, str(pose_id),
+                                tuple(pose[0:2, kpt_id].astype(int)), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
+                alpha = max(pose[2, kpt_id], 0.5)
+                cv2.circle(img, tuple(pose[0:2, kpt_id].astype(int)), 3, (0, 255*alpha, 255*alpha), -1, cv2.LINE_AA)
