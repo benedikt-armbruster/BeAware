@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 class DataSaver:
-    counter_file_name = 'counter.json'
+    counter_file_name = 'counter'
 
     def __init__(self, file_path):
         self.path = Path(file_path)
@@ -22,7 +22,7 @@ class DataSaver:
         cv2.imwrite(img_filename, img)
 
     def _read_counter_from_disk(self):
-        counter_file_path = self.path.joinpath(self.counter_file_name)
+        counter_file_path = self.path.joinpath(self.counter_file_name + '.json')
         if not counter_file_path.is_file():
             self.counter = 0
             self._write_counter_to_disk()
@@ -31,9 +31,11 @@ class DataSaver:
             self.counter = json.load(json_file)['counter']
 
     def _write_counter_to_disk(self):
-        counter_file_path = self.path.joinpath(self.counter_file_name)
-        with counter_file_path.open('w') as outfile:
+        counter_file_path = self.path.joinpath(self.counter_file_name + '.json')
+        new_counter_file_path = self.path.joinpath(self.counter_file_name + '_new.json')
+        with new_counter_file_path.open('w') as outfile:
             json.dump({'counter': self.counter}, outfile)
+        new_counter_file_path.replace(counter_file_path)
 
     def _get_file_names(self):
         base = str(self.path.joinpath("{:06d}_{}".format(self.counter, time.strftime("%Y%m%d-%H%M%S"))))

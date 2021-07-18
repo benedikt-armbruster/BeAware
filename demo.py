@@ -139,6 +139,9 @@ if __name__ == '__main__':
     parser.add_argument('--port',
                         help='Optional. Port to expose server for tcp data transmission.',
                         type=int, default=None)
+    parser.add_argument('--export-delay',
+                        help='Optional. Minimum time in seconds between exports.',
+                        type=int, default=0)
     args = parser.parse_args()
 
     if args.video == '' and args.images == '':
@@ -163,6 +166,7 @@ if __name__ == '__main__':
         cv2.setMouseCallback(canvas_3d_window_name, Plotter3d.mouse_callback)
 
     if args.port is not None or args.export_path is not None:
+        next_export_time = 0
         if args.port is not None:
             data_sender = DataSender(port=args.port)
         else:
@@ -173,10 +177,13 @@ if __name__ == '__main__':
             data_saver = None
 
         def save_data(img, poses_3d, poses_2d):
-            if data_sender is not None:
-                data_sender.send(img, poses_3d, poses_2d)
-            if data_saver is not None:
-                data_saver.save_to_disk(img, poses_3d, poses_2d)
+            global next_export_time
+            if next_export_time <= time.time():
+                next_export_time = time.time() + args.export_delay
+                if data_sender is not None:
+                    data_sender.send(img, poses_3d, poses_2d)
+                if data_saver is not None:
+                    data_saver.save_to_disk(img, poses_3d, poses_2d)
     else:
         def save_data(img, poses_3d, poses_2d):
             pass
