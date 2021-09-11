@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../utility/round_container.dart';
+import '../utility/be_aware_colors.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({ Key? key, required this.title}) : super(key: key);
@@ -16,8 +18,8 @@ class _HomeScreenState extends State<HomeScreen>{
               Expanded(
                 flex: 5,
                 child: Container(
-                  child: Text("Text"),
-                  color: Colors.green,
+                  child: RoundContainer(),
+                  color: Color(BeAwareColors.hellblau),
                   height: 40,
                   margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             
@@ -50,6 +52,8 @@ class _HomeScreenState extends State<HomeScreen>{
                   margin: EdgeInsets.only(top: 4.0 ),
                   child: customRow,
                 ),
+
+                
                       
                 Container(
                   margin: EdgeInsets.only(bottom: 4.0 ),

@@ -4,7 +4,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:startup_namer/home/home_screen.dart';
+import 'package:startup_namer/home/home_viewdart';
 
 void main() => runApp(MyApp());
 
