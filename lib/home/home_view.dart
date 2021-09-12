@@ -11,6 +11,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+
 class _HomeScreenState extends State<HomeScreen>{
 
   var customRow = Row(
@@ -20,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen>{
                 child: Container(
                   child: RoundContainer(),
                   color: Color(BeAwareColors.hellblau),
-                  height: 40,
                   margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             
                   
@@ -31,13 +31,27 @@ class _HomeScreenState extends State<HomeScreen>{
                 child: Container(
                   child: Text("Noch ein Text"),
                   color: Colors.lightBlue,
-                  height: 40,
                   
                 ),
               ), 
             ]
 
           );
+
+  var dataContainer =  Container(
+        decoration: BoxDecoration(
+          color: Colors.tealAccent,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withAlpha(60),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+            ),
+          ],
+        ),
+        child: Text("Noch ein Text"), 
+      );
 
   @override
   Widget build(BuildContext context){
@@ -47,37 +61,44 @@ class _HomeScreenState extends State<HomeScreen>{
       ),
       body:SafeArea(
             child: Column (
-              children: [    
-                Container(
-                  margin: EdgeInsets.only(top: 4.0 ),
-                  child: customRow,
-                ),
-
-                
-                      
-                Container(
-                  margin: EdgeInsets.only(bottom: 4.0 ),
-                  child: customRow,
-                ),
-                                
-                            
-              Flexible(
-                child: Row(
+              children:[  
+              Container(
+                color: Colors.black38,
+                height: MediaQuery.of(context).size.height*0.29,
+                margin: EdgeInsets.only(top: 4.0 ),
+                child: customRow,
+              ),               
+              
+              Container(
+                color: Colors.black45,
+                height: MediaQuery.of(context).size.height*0.29,
+                margin: EdgeInsets.only(bottom: 4.0 ),
+                child: customRow,
+              ),
+                                          
+        Row(
                   children: <Widget>[
                     Expanded(
                       flex: 10,
                       child: Container(
-                        child: Text("Noch ein Text"),
-                        color: Colors.tealAccent,
-                        height: 30,
+                        color: Colors.black12,
+                        height: MediaQuery.of(context).size.height*0.33,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            dataContainer,
+                            dataContainer,
+                            dataContainer
+                          ]
+                        )
+                        
 
                         
                       ),
-                    ), 
+                    ),
                   ]
                 )
               
-              ),
             ]
           )
 
