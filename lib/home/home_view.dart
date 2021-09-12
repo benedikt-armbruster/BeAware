@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../utility/round_container.dart';
+import '../utility/icon_container.dart';
+import '../utility/data_container.dart';
 import '../utility/be_aware_colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,44 +15,59 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>{
 
-  var customRow = Row(
+  var customRowTop = Row(
             children: <Widget>[
               Expanded(
                 flex: 5,
                 child: Container(
-                  child: RoundContainer(),
-                  color: Color(BeAwareColors.hellblau),
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            
-                  
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: RoundIconContainer(
+                    bgColor: Color(BeAwareColors.crayola),
+                    icon: Icons.health_and_safety_outlined,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 5,
+                 child: Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: RoundIconContainer(
+                    bgColor: Color(BeAwareColors.crayola),
+                    icon: Icons.healing_outlined,
+                  ), 
+                ),
+              ), 
+            ]
+          );
+
+   var customRowBottom = Row(
+            children: <Widget>[
+              Expanded(
+                flex: 5,
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: RoundIconContainer(
+                    bgColor: Color(BeAwareColors.crayola),
+                    icon: Icons.settings_accessibility_rounded,
+                  ),
                 ),
               ),
               Expanded(
                 flex: 5,
                 child: Container(
-                  child: Text("Noch ein Text"),
-                  color: Colors.lightBlue,
-                  
-                ),
-              ), 
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: RoundIconContainer(
+                    bgColor: Color(BeAwareColors.crayola),
+                    icon: Icons.favorite_outline,
+                  ),
+                ), 
+              ),
             ]
-
           );
-
-  var dataContainer =  Container(
-        decoration: BoxDecoration(
-          color: Colors.tealAccent,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withAlpha(60),
-              blurRadius: 5.0,
-              spreadRadius: 1.0,
-            ),
-          ],
-        ),
-        child: Text("Noch ein Text"), 
-      );
 
   @override
   Widget build(BuildContext context){
@@ -60,44 +76,98 @@ class _HomeScreenState extends State<HomeScreen>{
         title: Text(widget.title),
       ),
       body:SafeArea(
-            child: Column (
-              children:[  
-              Container(
-                color: Colors.black38,
-                height: MediaQuery.of(context).size.height*0.29,
-                margin: EdgeInsets.only(top: 4.0 ),
-                child: customRow,
-              ),               
-              
-              Container(
-                color: Colors.black45,
-                height: MediaQuery.of(context).size.height*0.29,
-                margin: EdgeInsets.only(bottom: 4.0 ),
-                child: customRow,
-              ),
-                                          
-        Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 10,
-                      child: Container(
-                        color: Colors.black12,
-                        height: MediaQuery.of(context).size.height*0.33,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            dataContainer,
-                            dataContainer,
-                            dataContainer
-                          ]
-                        )
-                        
-
-                        
+        child: Column (
+          children:[  
+          Container(
+            //color: Colors.black38,
+            height: MediaQuery.of(context).size.height*0.29,
+            margin: EdgeInsets.only(left: 20.0, right: 20.0 ),
+            child: customRowTop,
+          ),               
+          
+          Container(
+            //color: Colors.black45,
+            height: MediaQuery.of(context).size.height*0.29,
+            margin: EdgeInsets.only(left: 20.0, right: 20.0 ),
+            child: customRowBottom,
+          ),
+                                            
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 10,
+                child: Container(
+                  height: MediaQuery.of(context).size.height*0.32,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child:Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: DataContainer(
+                              height: 0.4,
+                              width: 0.9,
+                              child: IconContainer(
+                                bgColor: Color(BeAwareColors.lapislazuli),
+                                borderRadius: 10.0,
+                                icon: Icons.stacked_line_chart_outlined,
+                              )
+                            )
+                          ),
+                          //Text("Some Data")
+                        ]
+                       ),
                       ),
+                      Expanded(
+                      child:Column(
+                          mainAxisSize: MainAxisSize.min,
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: DataContainer(
+                              height: 0.4,
+                              width: 0.9,
+                              child: IconContainer(
+                                bgColor: Color(BeAwareColors.lapislazuli),
+                                borderRadius: 10.0,
+                                icon: Icons.stacked_bar_chart_outlined,
+                              )
+                            )
+                          ),
+                          //Text("Some Data")
+                        ]
+                      ),  
                     ),
-                  ]
-                )
+                    Expanded(
+                      child:Column(
+                        mainAxisSize: MainAxisSize.min,
+                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          //Text("Some Data"),
+                          Expanded(
+                            child: DataContainer(
+                              height: 0.4,
+                              width: 0.9,
+                              child: IconContainer(
+                                bgColor: Color(BeAwareColors.lapislazuli),
+                                borderRadius: 10.0,
+                                icon: Icons.data_usage_outlined,
+                              )
+                            )
+                          ),
+                          
+                        ]
+                      ),
+                      )
+                    ]
+                          )
+                        ),
+                      ),
+                    ]
+                  )
               
             ]
           )
