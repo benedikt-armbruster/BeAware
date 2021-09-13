@@ -27,6 +27,7 @@ class DataViewLayout extends StatelessWidget{
                 Container(
                   height: MediaQuery.of(context).size.height*this.upperHeight,
                   width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.only(top: 24),
                   color: this.upperBg,
                   child: this.upperChild,
                 )
