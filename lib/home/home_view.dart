@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_titled_container/flutter_titled_container.dart';
+
 import '../utility/icon_container.dart';
 import '../utility/data_container.dart';
 import '../utility/be_aware_colors.dart';
@@ -79,15 +81,21 @@ class _HomeScreenState extends State<HomeScreen>{
         child: Column (
           children:[  
           Container(
+             height: MediaQuery.of(context).size.height*0.05,
+            margin: EdgeInsets.only(left: 20.0, right: 20.0 ),
+            child: Text("Some Icons"),
+          ),
+
+          Container(
             //color: Colors.black38,
-            height: MediaQuery.of(context).size.height*0.29,
+            height: MediaQuery.of(context).size.height*0.28,
             margin: EdgeInsets.only(left: 20.0, right: 20.0 ),
             child: customRowTop,
           ),               
           
           Container(
             //color: Colors.black45,
-            height: MediaQuery.of(context).size.height*0.29,
+            height: MediaQuery.of(context).size.height*0.28,
             margin: EdgeInsets.only(left: 20.0, right: 20.0 ),
             child: customRowBottom,
           ),
@@ -95,72 +103,52 @@ class _HomeScreenState extends State<HomeScreen>{
           Row(
             children: <Widget>[
               Expanded(
-                flex: 10,
-                child: Container(
-                  height: MediaQuery.of(context).size.height*0.32,
+              //  flex: 10,
+               child:Container(
+                 //color: Colors.deepOrangeAccent,
+                 height: MediaQuery.of(context).size.height*0.28,
+                 width: MediaQuery.of(context).size.width,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,                 
+                    children:[ 
                       Expanded(
-                        child:Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: DataContainer(
-                              height: 0.4,
-                              width: 0.9,
-                              child: IconContainer(
-                                bgColor: Color(BeAwareColors.lapislazuli),
-                                borderRadius: 10.0,
-                                icon: Icons.stacked_line_chart_outlined,
-                              )
-                            )
-                          ),
-                          //Text("Some Data")
-                        ]
-                       ),
+                        flex: 1,
+                        child: DataContainer(
+                          height: 0.7,
+                          width: 0.9, 
+                          child: IconContainer(  
+                            bgColor: Color(BeAwareColors.lapislazuli),
+                            borderRadius: 10.0,
+                            icon: Icons.stacked_line_chart_outlined, 
+                          )
+                            
+                        )
                       ),
-                      Expanded(
-                      child:Column(
-                          mainAxisSize: MainAxisSize.min,
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child: DataContainer(
-                              height: 0.4,
-                              width: 0.9,
-                              child: IconContainer(
-                                bgColor: Color(BeAwareColors.lapislazuli),
-                                borderRadius: 10.0,
-                                icon: Icons.stacked_bar_chart_outlined,
-                              )
-                            )
-                          ),
-                          //Text("Some Data")
-                        ]
-                      ),  
-                    ),
+                      //Text("Some Data")
+                           
                     Expanded(
-                      child:Column(
-                        mainAxisSize: MainAxisSize.min,
-                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          //Text("Some Data"),
-                          Expanded(
-                            child: DataContainer(
-                              height: 0.4,
-                              width: 0.9,
-                              child: IconContainer(
-                                bgColor: Color(BeAwareColors.lapislazuli),
-                                borderRadius: 10.0,
-                                icon: Icons.data_usage_outlined,
-                              )
-                            )
-                          ),
-                          
-                        ]
-                      ),
+                      child: DataContainer(
+                        height: 0.7,
+                        width: 0.9,
+                        child: IconContainer(
+                          bgColor: Color(BeAwareColors.lapislazuli),
+                          borderRadius: 10.0,
+                          icon: Icons.stacked_bar_chart_outlined,
+                        )
+                      )
+                    ),
+                    //Text("Some Data")
+                   
+                    Expanded(
+                      child: DataContainer(
+                        height: 0.7,
+                        width: 0.9,
+                        child: IconContainer(
+                          bgColor: Color(BeAwareColors.lapislazuli),
+                          borderRadius: 10.0,
+                          icon: Icons.data_usage_outlined,
+                        )
+                      )
                       )
                     ]
                           )
