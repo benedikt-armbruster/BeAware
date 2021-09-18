@@ -32,6 +32,9 @@ dependencies:
   english_words: ^4.0.0 
   flutter_titled_container: ^1.0.7
   fl_chart: ^0.40.0
+  shared_preferences:
+  http:
+  intl: ^0.17.0-nullsafety.2
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +61,8 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
+  assets:
+    - assets/mock_sensor_values.json
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
