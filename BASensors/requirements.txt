@@ -1,0 +1,4 @@
+# Requires Avahi/Bounjour installed on the system for Homekit to work
+# Can be installed on an raspberry pi or jetson with sudo apt-get install libavahi-compat-libdnssd-dev
+pyserial ~=3.5
+HAP-python[QRCode] ~=4.2.1
