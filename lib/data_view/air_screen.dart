@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:startup_namer/data/SensorDataProvider.dart';
+import 'package:startup_namer/data/model/SensorData.dart';
 import 'package:startup_namer/utility/be_aware_colors.dart';
 import 'package:startup_namer/utility/data_view_layout.dart';
 import 'package:intl/intl.dart';
@@ -56,9 +57,12 @@ class AirScreen extends StatelessWidget {
                     upperBg: Color(BeAwareColors.crayola),
                     upperChild: Container(
                         child: FutureBuilder<List<FlSpot>>(
-                          future: SensorDataProvider().getValuesAsFLSpots(
-                              "bme", "STATIC_IAQ"),
-                          builder: (BuildContext context,
+          future: SensorDataProvider().staticAqi.then((values) => values
+              .filterByMaxRelativeAge(Duration(days: 1))
+              .groupByAverageWithIntervalLength(Duration(minutes: 5))
+              .roundValuesWithDecimalPlaces(1)
+              .asFlSpotValues),
+          builder: (BuildContext context,
                               AsyncSnapshot<List<FlSpot>> sensorData) {
                             return LineChart(
                               LineChartData(
