@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:startup_namer/data_view/air_view.dart';
+import 'package:startup_namer/data_view/air_screen.dart';
+import 'package:startup_namer/data_view/data_view.dart';
 
 class RoundIconContainer extends StatelessWidget{
   final Color bgColor;
@@ -68,7 +69,7 @@ class IconContainer extends StatelessWidget{
           onTap: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AirView()),
+              MaterialPageRoute(builder: (context) => DataView(selectedPage: 2,)),
              );
   
           },

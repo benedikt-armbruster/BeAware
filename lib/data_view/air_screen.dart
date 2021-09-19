@@ -5,7 +5,7 @@ import 'package:startup_namer/utility/be_aware_colors.dart';
 import 'package:startup_namer/utility/data_view_layout.dart';
 import 'package:intl/intl.dart';
 
-class AirView extends StatelessWidget {
+class AirScreen extends StatelessWidget {
   //const AirView({Key? key}) : super(key: key);
 
   final List<Color> gradientColors = [
@@ -47,11 +47,7 @@ class AirView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Air Quality"),
-        ),
-        body: SafeArea(
+    return  SafeArea(
             child: Column(
                 children: [
                   DataViewLayout(
@@ -116,7 +112,7 @@ class AirView extends StatelessWidget {
                   )
                 ]
             )
-        )
+
     );
   }
 }
