@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_titled_container/flutter_titled_container.dart';
-
 import '../utility/icon_container.dart';
 import '../utility/data_container.dart';
 import '../utility/be_aware_colors.dart';
 
+
 class HomeScreen extends StatefulWidget {
-  HomeScreen({ Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
+ // HomeScreen({ Key? key}) : super(key: key);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -74,9 +70,6 @@ class _HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body:SafeArea(
         child: Column (
           children:[  
@@ -120,6 +113,8 @@ class _HomeScreenState extends State<HomeScreen>{
                             bgColor: Color(BeAwareColors.lapislazuli),
                             borderRadius: 10.0,
                             icon: Icons.stacked_line_chart_outlined, 
+                            title: "Air",
+                            tabIndex: 0,
                           )
                             
                         )
@@ -134,6 +129,8 @@ class _HomeScreenState extends State<HomeScreen>{
                           bgColor: Color(BeAwareColors.lapislazuli),
                           borderRadius: 10.0,
                           icon: Icons.stacked_bar_chart_outlined,
+                          title: "Posture",
+                          tabIndex: 1,
                         )
                       )
                     ),
@@ -147,6 +144,8 @@ class _HomeScreenState extends State<HomeScreen>{
                           bgColor: Color(BeAwareColors.lapislazuli),
                           borderRadius: 10.0,
                           icon: Icons.data_usage_outlined,
+                          title: "Light",
+                          tabIndex: 2,
                         )
                       )
                       )
@@ -160,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen>{
             ]
           )
 
-          )
+          ),
         );
   }
 }

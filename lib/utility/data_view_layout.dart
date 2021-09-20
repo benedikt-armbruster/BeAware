@@ -47,6 +47,7 @@ class DataViewLayout extends StatelessWidget{
           ]
         )
       );
+    
   }
   
 }

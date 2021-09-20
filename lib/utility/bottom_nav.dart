@@ -1,49 +1,49 @@
-
-import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:startup_namer/data_view/air_screen.dart';
+import 'package:startup_namer/home/home_view.dart';
 
-class DataView extends StatefulWidget{
-  final int selectedPage;
-
-  DataView({
-    required this.selectedPage
-  });
-
+class BottomNav extends StatefulWidget{
   @override
-  _DataViewState createState() => _DataViewState(selectedPage: this.selectedPage);
+  _BottomNavState createState() => _BottomNavState();
   
 }
 
-class _DataViewState extends State<DataView>{
-  final int selectedPage;
+class _BottomNavState extends State<BottomNav>{
   int _selectedIndex = 0;
   int badge = 0;
 
   PageController controller = PageController();
 
-  _DataViewState({
-    required this.selectedPage
-  });
+  static const TextStyle optionStyle = 
+      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+  
+  //List<Color> colors = [
+  //  Colors.purple,
+  //  Colors.pink,
+  //  Colors.amber[600]!,
+  //  Colors.teal
+  //];
+
+  List<Widget> content = [
+    HomeScreen(),
+     Text(
+      'Settings',
+      style: optionStyle,
+    ),
+    Text(
+      'Profile',
+      style: optionStyle,
+    ),   
+  ];
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:DefaultTabController(
-        initialIndex: this.selectedPage,
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: TabBar(
-              tabs: [
-                Tab(text: 'Air'),
-                Tab(text: 'Posture'),
-                Tab(text: 'Light')    
-              ],
-            ),
-          ),
-          body: SafeArea(   
-            child: PageView.builder(
+      child: Scaffold(
+        body: SafeArea(
+          child: PageView.builder(
             onPageChanged: (page){
               setState(() {
                 _selectedIndex = page;
@@ -51,23 +51,19 @@ class _DataViewState extends State<DataView>{
               });
             },
             controller: controller,
-
             itemBuilder: (context, position){
-              return TabBarView(
-              children: [
-                AirScreen(),
-                Text("Posture"),
-                Text("Light")
-                //PostureView(),
-                //LightView(),
-              ],
-            );
-            }
-          )
+              return Container(
+                child: AirScreen()
+              );
+            },
+             itemCount: 4,
+
+
           ),
+          //child: _navOptions.elementAt(_selectedIndex),
+        ),
 
-
-          bottomNavigationBar: Container(
+        bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -117,10 +113,10 @@ class _DataViewState extends State<DataView>{
           ),
 
         ),
-        )
-      )
+
+      ),
     );
   }
-
   
 }
+ 

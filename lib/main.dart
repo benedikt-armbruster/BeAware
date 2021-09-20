@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:startup_namer/home/home_view.dart';
+import 'package:startup_namer/utility/bottom_nav.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     //final wordPair = WordPair.random();
     return MaterialApp(
       title: 'Welcome to Flutter',
-      home: HomeScreen(title: 'Test HomeScreen'),
+      home: HomeScreen(),
       );
   }
 }

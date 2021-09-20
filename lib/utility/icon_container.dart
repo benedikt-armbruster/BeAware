@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:startup_namer/data_view/air_screen.dart';
 import 'package:startup_namer/data_view/data_view.dart';
+import 'package:startup_namer/utility/bottom_nav.dart';
 
 class RoundIconContainer extends StatelessWidget{
   final Color bgColor;
@@ -46,6 +47,8 @@ class IconContainer extends StatelessWidget{
   final IconData? icon;
   final Color? iconColor;
   final double borderRadius;
+  final String title;
+  final int tabIndex;
 
   IconContainer({
     required this.bgColor,
@@ -53,6 +56,8 @@ class IconContainer extends StatelessWidget{
     this.icon,
     this.iconColor = Colors.white,
     required this.borderRadius,
+    required this.title,
+    this.tabIndex = 1,
   });
 
 
@@ -64,12 +69,13 @@ class IconContainer extends StatelessWidget{
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
-        Text("Test 2"),
+        Text(this.title),
         InkWell(
           onTap: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DataView(selectedPage: 2,)),
+              //MaterialPageRoute(builder: (context) => BottomNav()),
+              MaterialPageRoute(builder: (context) => DataView(selectedPage: this.tabIndex,)),
              );
   
           },
