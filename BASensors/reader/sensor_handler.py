@@ -12,7 +12,7 @@ class SensorHandler:
     def handle(self, timestamp, base_reading):
         for base_sensor, values in base_reading.items():
             if values is None or not values['success']:
-                return
+                continue
             for sensor_name, value in values.items():
                 if sensor_name in self.ignored_fields:
                     continue
