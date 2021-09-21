@@ -7,6 +7,7 @@ import threading
 import logging
 from datetime import datetime
 
+
 class SensorReader:
 
     def __init__(self, serial_device = "/dev/ttyTHS1"):
@@ -72,7 +73,7 @@ class SensorReader:
                 line = self.serial_channel.readline()
                 value_count += 1
                 # print(line)
-                print(f"\rValues read: {value_count}   ", end='')
+                print(f"\rValues read: {value_count} {str(datetime.now())}        ", end='')
                 sys.stdout.flush()
             except (serial.serialutil.SerialException, ValueError) as e:
                 print()
@@ -92,7 +93,7 @@ class SensorReader:
                     timestamp = datetime.now().timestamp()
                     self._notify_listener(timestamp, dict)
                 except (json.decoder.JSONDecodeError, UnicodeDecodeError) as e:
-                    print(f"Could not parse line: {line}")
+                    logging.info(f"Could not parse line: {line}")
                     print("Error occured: " + str(e))
 
     def _notify_listener(self, timestamp, value):

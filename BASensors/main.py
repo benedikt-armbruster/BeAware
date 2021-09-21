@@ -6,7 +6,7 @@ import logging
 import sys
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s[%(module)s] %(message)s", datefmt='%Y-%m-%d %H:%M:%S')
     if len(sys.argv) > 1:
         serial_port = sys.argv[1]
     else:
