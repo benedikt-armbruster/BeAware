@@ -44,7 +44,10 @@ class RequestHandler(http.server.SimpleHTTPRequestHandler):
         self._set_headers()
         response = json.dumps(json_dict)
         response = bytes(response, 'utf-8')
-        self.wfile.write(response)
+        try:
+            self.wfile.write(response)
+        except BrokenPipeError:
+            print("Broken pipe while serving json request")
 
 class WebServer:
     @staticmethod
