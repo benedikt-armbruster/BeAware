@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_titled_container/flutter_titled_container.dart';
+import 'package:startup_namer/data_view/data_view.dart';
 
 import '../utility/icon_container.dart';
 import '../utility/data_container.dart';
@@ -119,7 +120,8 @@ class _HomeScreenState extends State<HomeScreen>{
                           child: IconContainer(  
                             bgColor: Color(BeAwareColors.lapislazuli),
                             borderRadius: 10.0,
-                            icon: Icons.stacked_line_chart_outlined, 
+                            icon: Icons.stacked_line_chart_outlined,
+                            onTap: (context) => DataView(selectedPage: 0,),
                           )
                             
                         )
@@ -134,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen>{
                           bgColor: Color(BeAwareColors.lapislazuli),
                           borderRadius: 10.0,
                           icon: Icons.stacked_bar_chart_outlined,
+                          onTap: (context) => DataView(selectedPage: 1,),
                         )
                       )
                     ),
@@ -147,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen>{
                           bgColor: Color(BeAwareColors.lapislazuli),
                           borderRadius: 10.0,
                           icon: Icons.data_usage_outlined,
+                          onTap: (context) => DataView(selectedPage: 2,),
                         )
                       )
                       )

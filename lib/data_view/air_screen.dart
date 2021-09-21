@@ -2,9 +2,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:startup_namer/data/SensorDataProvider.dart';
 import 'package:startup_namer/data/model/SensorData.dart';
+import 'package:startup_namer/utility/base_line_chart.dart';
 import 'package:startup_namer/utility/be_aware_colors.dart';
+import 'package:startup_namer/utility/data_container.dart';
 import 'package:startup_namer/utility/data_view_layout.dart';
 import 'package:intl/intl.dart';
+import 'package:startup_namer/utility/icon_container.dart';
 
 class AirScreen extends StatelessWidget {
   //const AirView({Key? key}) : super(key: key);
@@ -13,110 +16,96 @@ class AirScreen extends StatelessWidget {
     const Color(0xFFFFFFFF),
   ];
 
-  SideTitles _noTitle() {
-    return SideTitles(showTitles: false);
-  }
-
-  SideTitles _bottomTitles() {
-    return SideTitles(
-      showTitles: true,
-        getTextStyles: (_, value) =>  TextStyle(
-          color: Color(BeAwareColors.indigo),
-          fontSize: 10,
-        ),
-      getTitles: (value) {
-        final DateTime date =
-        DateTime.fromMillisecondsSinceEpoch(value.toInt());
-        return DateFormat.E().add_j().format(date);
-      },
-      margin: 8,
-      rotateAngle: 90.0,
+  Widget simpleTextButton(BuildContext context, Widget Function(BuildContext) onTap, {required Widget child}) {
+    return TextButton(
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+      ),
+      onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => onTap(context),)
+      ),
+      child: child,
     );
   }
 
-  SideTitles _leftTitle() {
+  Widget baseLineChartForDataSource(
+      Future<SensorDataContainer> Function() getData,
+      {String Function(double)? getText}) {
+    return Scaffold(
+        backgroundColor: Color(BeAwareColors.crayola),
+        body:BaseLineChart(
+      bottomTitle: BaseLineChart.defaultBottomTitles(),
+      leftTitle: _leftTitle(getText: getText),
+      gradientColors: gradientColors,
+      fetchDataFunction: () => getData().then((values) => values
+          .filterByMaxRelativeAge(Duration(days: 1))
+          .groupByAverageWithIntervalLength(Duration(minutes: 5))
+          .roundValuesWithDecimalPlaces(1)
+          .asFlSpotValues),
+    ));
+  }
+
+  SideTitles _leftTitle({String Function(double)? getText}) {
     return SideTitles(
-      showTitles: true,
-      getTitles: (value) => "${value.toStringAsFixed(1)}°C",
-      reservedSize: 30,
-      getTextStyles: (_, value) =>  TextStyle(
-        color: Color(BeAwareColors.indigo),
-        fontSize: 10,
-      )
-    );
+        showTitles: true,
+        getTitles: getText ?? (value) => "${value.toStringAsFixed(0)}",
+        reservedSize: 30,
+        getTextStyles: (_, value) => TextStyle(
+              color: Color(BeAwareColors.indigo),
+              fontSize: 10,
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
-            child: Column(
-                children: [
-                  DataViewLayout(
-                    upperHeight: 0.49,
-                    lowerHeight: 0.39,
-                    upperBg: Color(BeAwareColors.crayola),
-                    upperChild: Container(
-                        child: FutureBuilder<List<FlSpot>>(
-          future: SensorDataProvider().staticAqi.then((values) => values
-              .filterByMaxRelativeAge(Duration(days: 1))
-              .groupByAverageWithIntervalLength(Duration(minutes: 5))
-              .roundValuesWithDecimalPlaces(1)
-              .asFlSpotValues),
-          builder: (BuildContext context,
-                              AsyncSnapshot<List<FlSpot>> sensorData) {
-                            return LineChart(
-                              LineChartData(
-                                  gridData: FlGridData(
-                                      show: false
-                                  ),
-                                  borderData: FlBorderData(
-                                    show: false,
-                                  ),
-                                  axisTitleData: FlAxisTitleData(
-                                    show: false,
-                                  ),
-                                  titlesData: FlTitlesData(
-                                    show: true,
-                                    bottomTitles: _bottomTitles(),
-                                    topTitles: _noTitle(),
-                                    rightTitles: _noTitle(),
-                                    leftTitles: _leftTitle(),
+    return SafeArea(
+        child: Column(children: [
+      DataViewLayout(
+        upperHeight: 0.49,
+        lowerHeight: 0.29,
+        upperBg: Color(BeAwareColors.crayola),
+        upperChild: Container(
+          child: BaseLineChart(
+            bottomTitle: BaseLineChart.defaultBottomTitles(),
+            leftTitle: _leftTitle(),
+            gradientColors: gradientColors,
+            fetchDataFunction: () => SensorDataProvider().staticAqi.then(
+                (values) => values
+                    .filterByMaxRelativeAge(Duration(days: 1))
+                    .groupByAverageWithIntervalLength(Duration(minutes: 5))
+                    .roundValuesWithDecimalPlaces(1)
+                    .asFlSpotValues),
+          ),
+        ),
+        lowerChild: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
 
-                                  ),
-                                  lineBarsData: [
-                                    LineChartBarData(
-                                        spots: sensorData.data,
-                                        isCurved: false,
-                                        colors: gradientColors,
-                                        barWidth: 4,
-                                        dotData: FlDotData(show: false),
-                                        belowBarData: BarAreaData(
-                                          show: false,
-                                          colors: gradientColors
-                                              .map((color) =>
-                                              color.withOpacity(0.1))
-                                              .toList(),
-                                        )
+                simpleTextButton(context, (context) => baseLineChartForDataSource(
+                    () => SensorDataProvider().temperature,
+                    getText: (value) => "${value.toStringAsFixed(1)}C"), child: Text('Temperature')),
+                simpleTextButton(context, (context) => baseLineChartForDataSource(
+                        () => SensorDataProvider().co2Equivalent), child: Text("CO2")),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                simpleTextButton(context, (context) => baseLineChartForDataSource(
+                    () => SensorDataProvider().humidity,
+                getText: (value) => "${value.toStringAsFixed(1)}%"), child: Text('Humidity')),
+                simpleTextButton(context, (context) => baseLineChartForDataSource(
+                        () => SensorDataProvider().breathVocEquivalent), child: Text("VOC")),
 
-
-                                    )
-                                  ]
-                              ),
-                              swapAnimationDuration: Duration(
-                                  milliseconds: 150), // Optional
-                              swapAnimationCurve: Curves.linear,
-                            );
-                          },
-                        )
-                    ),
-                    lowerChild: Container(
-                        child: Text("Lower")
-                    ),
-
-                  )
-                ]
+              ],
             )
-
-    );
+          ],
+        ),
+      )
+    ]));
   }
 }

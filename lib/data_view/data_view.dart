@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:startup_namer/data_view/air_screen.dart';
+import 'package:startup_namer/data_view/light_screen.dart';
 
 class DataView extends StatelessWidget{
   final int selectedPage;
@@ -31,7 +32,7 @@ class DataView extends StatelessWidget{
               children: [
                 AirScreen(),
                 Text("Posture"),
-                Text("Light")
+                LightScreen(),
                 //PostureView(),
                 //LightView(),
               ],

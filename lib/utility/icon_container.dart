@@ -46,6 +46,7 @@ class IconContainer extends StatelessWidget{
   final IconData? icon;
   final Color? iconColor;
   final double borderRadius;
+  final Widget Function(BuildContext) onTap;
 
   IconContainer({
     required this.bgColor,
@@ -53,6 +54,7 @@ class IconContainer extends StatelessWidget{
     this.icon,
     this.iconColor = Colors.white,
     required this.borderRadius,
+  required this.onTap,
   });
 
 
@@ -69,9 +71,8 @@ class IconContainer extends StatelessWidget{
           onTap: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DataView(selectedPage: 2,)),
-             );
-  
+              MaterialPageRoute(builder: (context) => onTap(context),)
+            );
           },
           child: new Ink(
           width: MediaQuery.of(context).size.width,
