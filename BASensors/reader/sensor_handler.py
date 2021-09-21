@@ -24,15 +24,18 @@ class SensorHandler:
                             handler(value)
                     else:
                         handlers(value)
+        SensorValueDatabase.insertion_done(timestamp)
         SensorValueDatabase.update_json()
 
 
 class SensorValueDatabase:
+    maximum_insertion_interval_seconds = 60
     table_name = 'sensor_values'
     con = None
     table_checked = False
     json_last_id = -1
     json_entries = {}
+    next_insert_timestamp = 0
 
     @staticmethod
     def _check_table():
@@ -55,8 +58,16 @@ class SensorValueDatabase:
         SensorValueDatabase.table_checked = True
 
     @staticmethod
+    def insertion_done(timestamp):
+        if SensorValueDatabase.next_insert_timestamp > timestamp:
+            return
+        SensorValueDatabase.next_insert_timestamp = timestamp + SensorValueDatabase.maximum_insertion_interval_seconds
+
+    @staticmethod
     def save_value(base_sensor, sensor_name, timestamp, value):
         SensorValueDatabase._check_table()
+        if SensorValueDatabase.next_insert_timestamp > timestamp:
+            return
         with SensorValueDatabase.con:
             SensorValueDatabase.con.execute(
                 f'INSERT INTO {SensorValueDatabase.table_name} (timestamp, base_sensor, sensor_name, value) values(?,?,?,?)',
