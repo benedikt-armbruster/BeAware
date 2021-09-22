@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:startup_namer/data_view/air_screen.dart';
+import 'package:startup_namer/data_view/light_screen.dart';
 
 class DataView extends StatefulWidget{
   final int selectedPage;
@@ -57,7 +58,7 @@ class _DataViewState extends State<DataView>{
               children: [
                 AirScreen(),
                 Text("Posture"),
-                Text("Light")
+                LightScreen(),
                 //PostureView(),
                 //LightView(),
               ],
