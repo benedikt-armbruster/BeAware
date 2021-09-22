@@ -1,3 +1,4 @@
+import math
 from argparse import ArgumentParser
 import json
 import os, time
@@ -104,6 +105,15 @@ def angle_between(v1, v2):
     return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
 
 # print(generate_features(test))
+def head_rotation(pose_3d):
+    shl = pose_3d[3][:-1] - pose_3d[9][:-1]
+    eyes = pose_3d[16][:-1] - pose_3d[15][:-1]
+    # we want the angle in the x-y-plane
+    shl[2] = 0
+    eyes[2] = 0
+    return angle_between(shl, eyes)
+
+
 
 if __name__ == '__main__':
     parser = ArgumentParser(description='Lightweight 3D human pose estimation demo. '
@@ -142,6 +152,7 @@ if __name__ == '__main__':
     parser.add_argument('--export-delay',
                         help='Optional. Minimum time in seconds between exports.',
                         type=int, default=0)
+    parser.add_argument('--no-3d-rendering', action='store_true', default=False, help='Optional. Disable 3d render preview')
     args = parser.parse_args()
 
     if args.video == '' and args.images == '':
@@ -158,8 +169,9 @@ if __name__ == '__main__':
         from modules.inference_engine_pytorch import InferenceEnginePyTorch
         net = InferenceEnginePyTorch(args.model, args.device)
     gui_enabled = not args.no_gui
+    enable_3d_render = not args.no_3d_rendering and gui_enabled
     canvas_3d = np.zeros((720, 1280, 3), dtype=np.uint8)
-    if gui_enabled:
+    if enable_3d_render:
         plotter = Plotter3d(canvas_3d.shape[:2])
         canvas_3d_window_name = 'Canvas 3D'
         cv2.namedWindow(canvas_3d_window_name)
@@ -209,6 +221,81 @@ if __name__ == '__main__':
     p_code = 112
     space_code = 32
     mean_time = 0
+
+    def refine_pose(img, pose_3d, pose_2d):
+        '''
+        This function will cut ou the part of image containing the person, to use this as the input of the model to
+        so that the relative resolution of this image is higher which could lead to better results.
+        :param img:
+        :param pose_2d:
+        :return:
+        '''
+        minimum_margin_factor = 0.55
+        # find bounding box
+        pose = np.array(pose_2d[0:-1]).reshape((-1, 3)).transpose()
+        # filter out invalid coordinates
+        x_min = min(pose[0, pose[0] > 0])
+        x_max = max(pose[0, pose[0] > 0])
+        y_min = min(pose[1, pose[1] > 0])
+        y_max = max(pose[1, pose[1] > 0])
+        # Todo: check if the pose is valid. e.g. enough key points with score above threshold.
+        # add minimum margin
+        x_min = int(max(0.0, x_min - (x_max - x_min) * minimum_margin_factor))
+        x_max = int(min(img.shape[1], x_max + (x_max - x_min) * minimum_margin_factor))
+        y_min = int(max(0.0, y_min - (y_max - y_min) * minimum_margin_factor))
+        y_max = int(min(img.shape[0], y_max + (y_max - y_min) * minimum_margin_factor))
+
+        #print(f'ymin {y_min}, y_max {y_max}, x_min {x_min}, x_max {x_max}')
+        height = int(y_max-y_min)
+        height_factor = math.ceil(height/base_height)
+        rounded_height = int(height_factor*base_height)
+        y_margin = int((rounded_height - height) / 2.0)
+        width = int(x_max - x_min)
+        keep_ratio = False
+        if keep_ratio:
+            # keep aspect ratio of the original image
+            rounded_width = int((img.shape[1] * rounded_height)/img.shape[0])
+        else:
+            rounded_width = int(width*1.1)
+        x_margin = int((rounded_width - width) / 2.0)
+        #print(f'y_margin {y_margin}, x_margin {x_margin}')
+
+        # crop image to fit the person. Use max/min to stay inside the indices of the original image
+        y_start = max(0, y_min - y_margin)
+        y_end = min(img.shape[0], y_start + rounded_height)
+        x_start = max(0, x_min - x_margin)
+        x_end = min(img.shape[1], x_start + rounded_width)
+        crop_img = img[y_start:y_end, x_start:x_end]
+        scale = base_height / crop_img.shape[0]
+        scaled_img = cv2.resize(crop_img, dsize=None, fx=scale, fy=scale)
+        scaled_img = scaled_img[:, 0:scaled_img.shape[1] - (scaled_img.shape[1] % stride)]
+        inference_result = net.infer(scaled_img)
+        poses_3d, poses_2d = parse_poses(inference_result, scale, stride, fx, is_video)
+        # Todo: handle person id correctly
+        draw_poses(crop_img, poses_2d)
+        #cv2.imshow('crop', crop_img)
+        # insert annotated part back in to the original image
+        img[y_start:y_end, x_start:x_end] = crop_img
+        cv2.rectangle(img, (x_start, y_start), (x_end, y_end), (0, 255, 0), 2)
+        # Todo: If there are multiple persons in the frame, find the right person
+        #  and return old pose data if model could not find this person in the cropped image
+        if not len(poses_3d):
+            # return old poses since we could not find any on the cropped image
+            print('Could not find pose on cropped image during refinement')
+            try:
+                # write images to disk for debugging
+                cv2.imwrite('cropped_fail_orig.png', img)
+                cv2.imwrite('cropped_fail_crop.png', crop_img)
+                input()  # wait for key press
+            except:
+                pass
+            return pose_3d, pose_2d
+        score_delta = poses_3d[0][3::4] - pose_3d[3::4]
+        print(f'better {poses_3d[0][3::4] >= pose_3d[3::4]}')
+        print(f'Mean score improvement through refinement: {np.average(score_delta[poses_3d[0][3::4] >= pose_3d[3::4]])}')
+        return poses_3d[0], poses_2d[0]
+
+
     np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
     for frame in frame_provider:
         current_time = cv2.getTickCount()
@@ -228,7 +315,6 @@ if __name__ == '__main__':
         # break
         t0 = time.time()
         poses_3d, poses_2d = parse_poses(inference_result, input_scale, stride, fx, is_video)
-        orig_poses_3d = poses_3d.copy()
         if len(poses_3d):
             normalized_pose = generate_features(poses_3d)
         else:
@@ -241,20 +327,35 @@ if __name__ == '__main__':
                     #print(f'{kpt_names[i]}: {keypoint}')
                     pass
             #print(poses_3d[0].reshape((-1, 4)))
-            if gui_enabled:
-                poses_3d = rotate_poses(poses_3d, R, t)
-                poses_3d_copy = poses_3d.copy()
+            if enable_3d_render:
+                poses_3d_rendering = rotate_poses(poses_3d.copy(), R, t)
+                poses_3d_copy = poses_3d_rendering.copy()
                 x = poses_3d_copy[:, 0::4]
                 y = poses_3d_copy[:, 1::4]
                 z = poses_3d_copy[:, 2::4]
-                poses_3d[:, 0::4], poses_3d[:, 1::4], poses_3d[:, 2::4] = -z, x, -y
+                poses_3d_rendering[:, 0::4], poses_3d_rendering[:, 1::4], poses_3d_rendering[:, 2::4] = -z, x, -y
 
-                poses_3d = poses_3d.reshape(poses_3d.shape[0], 19, -1)[:, :, 0:3]
-                edges = (Plotter3d.SKELETON_EDGES + 19 * np.arange(poses_3d.shape[0]).reshape((-1, 1, 1))).reshape((-1, 2))
-        if gui_enabled:
-            plotter.plot(canvas_3d, poses_3d, edges)
-            cv2.imshow(canvas_3d_window_name, canvas_3d)
-        draw_poses(frame, poses_2d)
+                poses_3d_rendering = poses_3d_rendering.reshape(poses_3d_rendering.shape[0], 19, -1)[:, :, 0:3]
+                edges = (Plotter3d.SKELETON_EDGES + 19 * np.arange(poses_3d_rendering.shape[0]).reshape(
+                    (-1, 1, 1))).reshape((-1, 2))
+                plotter.plot(canvas_3d, poses_3d_rendering, edges)
+                cv2.imshow(canvas_3d_window_name, canvas_3d)
+
+        if len(poses_2d):
+            # refine first pose
+            pose_3d_refined, pose_2d_refined = refine_pose(frame, poses_3d[0], poses_2d[0])
+            draw_poses(frame, poses_2d[1:])
+            cv2.putText(frame, f'Head rotation orig.:    {head_rotation(poses_3d[0].reshape((-1, 4)))}',
+                        (40, 200), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
+            refined_head_rotation = head_rotation(pose_3d_refined.reshape((-1, 4)))
+            cv2.putText(frame, f'Head rotation refined: {refined_head_rotation}',
+                        (40, 240), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
+            cv2.putText(frame, f'Nack coords: {pose_3d_refined[0:4]}',
+                        (40, 280), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
+            poses_2d[0] = pose_2d_refined
+            poses_3d[0] = pose_3d_refined
+
+        #draw_poses(frame, poses_2d)
         current_time = (cv2.getTickCount() - current_time) / cv2.getTickFrequency()
         if mean_time == 0:
             mean_time = current_time
@@ -267,12 +368,13 @@ if __name__ == '__main__':
         cv2.putText(frame, f'Detected Persons: {len(poses_3d)}',
                     (40, 160), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
         if normalized_pose is not None:
-            for i, keypoint in enumerate([0,1]): # enumerate([3,9]):
-                cv2.putText(frame, f'{angle_between_limbs_names[keypoint]}: {normalized_pose[1][keypoint]}',
-                            (40, 200 + i * 40), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
+            pass
+           # for i, keypoint in enumerate([0,1]): # enumerate([3,9]):
+            #    cv2.putText(frame, f'{angle_between_limbs_names[keypoint]}: {normalized_pose[1][keypoint]}',
+            #                (40, 200 + i * 40), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255))
         if gui_enabled:
             cv2.imshow('ICV 3D Human Pose Estimation', frame)
-        save_data(frame, orig_poses_3d.tolist(), poses_2d.tolist())
+        save_data(frame, poses_3d.tolist(), poses_2d.tolist())
 
         key = cv2.waitKey(delay)
         if key == esc_code:
