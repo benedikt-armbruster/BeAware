@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:startup_namer/data/SensorDataProvider.dart';
 import 'package:startup_namer/utility/be_aware_colors.dart';
 
 class BaseLineChart extends StatelessWidget {
@@ -19,9 +18,8 @@ class BaseLineChart extends StatelessWidget {
       this.rightTitle,
       this.topTitle,
       required this.gradientColors,
-      required this.fetchDataFunction })
+      required this.fetchDataFunction})
       : super(key: key);
-
 
   static SideTitles defaultBottomTitles() {
     return SideTitles(
@@ -32,7 +30,7 @@ class BaseLineChart extends StatelessWidget {
       ),
       getTitles: (value) {
         final DateTime date =
-        DateTime.fromMillisecondsSinceEpoch(value.toInt());
+            DateTime.fromMillisecondsSinceEpoch(value.toInt());
         return DateFormat.E().add_j().format(date);
       },
       margin: 8,
@@ -62,17 +60,18 @@ class BaseLineChart extends StatelessWidget {
                 rightTitles: rightTitle ?? SideTitles(showTitles: false),
                 leftTitles: leftTitle,
               ),
-            lineTouchData: LineTouchData(
-                touchTooltipData: LineTouchTooltipData (
-                  getTooltipItems: (items) {
-                    return items.map((e) => LineTooltipItem("${e.y}\n${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(e.x.toInt()))}", TextStyle(
-                      color: e.bar.colors[0],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ))).toList(growable: false);
-                  }
-                )
-            ),
+              lineTouchData: LineTouchData(touchTooltipData:
+                  LineTouchTooltipData(getTooltipItems: (items) {
+                return items
+                    .map((e) => LineTooltipItem(
+                        "${e.y}\n${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(e.x.toInt()))}",
+                        TextStyle(
+                          color: e.bar.colors[0],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        )))
+                    .toList(growable: false);
+              })),
               lineBarsData: [
                 LineChartBarData(
                     spots: sensorData.data,

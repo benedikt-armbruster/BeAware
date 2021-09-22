@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:fl_chart/fl_chart.dart';
 import "package:collection/collection.dart";
+import 'package:fl_chart/fl_chart.dart';
 
 class SensorData {
   final int id;
@@ -46,7 +46,6 @@ class SensorDataContainer {
     this.maxValue = maxValue;
     final maxT = DateTime.fromMillisecondsSinceEpoch(maxTimestamp.floor());
     final minT = DateTime.fromMillisecondsSinceEpoch(minTimestamp.floor());
-
   }
 
   List<FlSpot> get asFlSpotValues => _sensorData

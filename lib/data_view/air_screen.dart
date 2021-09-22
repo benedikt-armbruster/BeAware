@@ -4,10 +4,7 @@ import 'package:startup_namer/data/SensorDataProvider.dart';
 import 'package:startup_namer/data/model/SensorData.dart';
 import 'package:startup_namer/utility/base_line_chart.dart';
 import 'package:startup_namer/utility/be_aware_colors.dart';
-import 'package:startup_namer/utility/data_container.dart';
 import 'package:startup_namer/utility/data_view_layout.dart';
-import 'package:intl/intl.dart';
-import 'package:startup_namer/utility/icon_container.dart';
 
 class AirScreen extends StatelessWidget {
   //const AirView({Key? key}) : super(key: key);
@@ -16,15 +13,18 @@ class AirScreen extends StatelessWidget {
     const Color(0xFFFFFFFF),
   ];
 
-  Widget simpleTextButton(BuildContext context, Widget Function(BuildContext) onTap, {required Widget child}) {
+  Widget simpleTextButton(
+      BuildContext context, Widget Function(BuildContext) onTap,
+      {required Widget child}) {
     return TextButton(
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
       ),
       onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => onTap(context),)
-      ),
+          MaterialPageRoute(
+            builder: (context) => onTap(context),
+          )),
       child: child,
     );
   }
@@ -34,16 +34,16 @@ class AirScreen extends StatelessWidget {
       {String Function(double)? getText}) {
     return Scaffold(
         backgroundColor: Color(BeAwareColors.crayola),
-        body:BaseLineChart(
-      bottomTitle: BaseLineChart.defaultBottomTitles(),
-      leftTitle: _leftTitle(getText: getText),
-      gradientColors: gradientColors,
-      fetchDataFunction: () => getData().then((values) => values
-          .filterByMaxRelativeAge(Duration(days: 1))
-          .groupByAverageWithIntervalLength(Duration(minutes: 5))
-          .roundValuesWithDecimalPlaces(1)
-          .asFlSpotValues),
-    ));
+        body: BaseLineChart(
+          bottomTitle: BaseLineChart.defaultBottomTitles(),
+          leftTitle: _leftTitle(getText: getText),
+          gradientColors: gradientColors,
+          fetchDataFunction: () => getData().then((values) => values
+              .filterByMaxRelativeAge(Duration(days: 1))
+              .groupByAverageWithIntervalLength(Duration(minutes: 5))
+              .roundValuesWithDecimalPlaces(1)
+              .asFlSpotValues),
+        ));
   }
 
   SideTitles _leftTitle({String Function(double)? getText}) {
@@ -84,23 +84,33 @@ class AirScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
-                simpleTextButton(context, (context) => baseLineChartForDataSource(
-                    () => SensorDataProvider().temperature,
-                    getText: (value) => "${value.toStringAsFixed(1)}C"), child: Text('Temperature')),
-                simpleTextButton(context, (context) => baseLineChartForDataSource(
-                        () => SensorDataProvider().co2Equivalent), child: Text("CO2")),
+                simpleTextButton(
+                    context,
+                    (context) => baseLineChartForDataSource(
+                        () => SensorDataProvider().temperature,
+                        getText: (value) => "${value.toStringAsFixed(1)}C"),
+                    child: Text('Temperature')),
+                simpleTextButton(
+                    context,
+                    (context) => baseLineChartForDataSource(
+                        () => SensorDataProvider().co2Equivalent),
+                    child: Text("CO2")),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                simpleTextButton(context, (context) => baseLineChartForDataSource(
-                    () => SensorDataProvider().humidity,
-                getText: (value) => "${value.toStringAsFixed(1)}%"), child: Text('Humidity')),
-                simpleTextButton(context, (context) => baseLineChartForDataSource(
-                        () => SensorDataProvider().breathVocEquivalent), child: Text("VOC")),
-
+                simpleTextButton(
+                    context,
+                    (context) => baseLineChartForDataSource(
+                        () => SensorDataProvider().humidity,
+                        getText: (value) => "${value.toStringAsFixed(1)}%"),
+                    child: Text('Humidity')),
+                simpleTextButton(
+                    context,
+                    (context) => baseLineChartForDataSource(
+                        () => SensorDataProvider().breathVocEquivalent),
+                    child: Text("VOC")),
               ],
             )
           ],

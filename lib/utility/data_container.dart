@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_titled_container/flutter_titled_container.dart';
 
-
-class DataContainer extends StatelessWidget{
+class DataContainer extends StatelessWidget {
   //Parameters
   final Widget? child;
   final double width;
@@ -14,24 +12,18 @@ class DataContainer extends StatelessWidget{
     required this.width,
     required this.height,
   });
-  
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        //color: Colors.deepPurpleAccent,
+        child: Container(
+      //color: Colors.deepPurpleAccent,
 
-        child: FractionallySizedBox(
-          widthFactor: this.width,
-          heightFactor: this.height,
-          child: this.child,
-        
+      child: FractionallySizedBox(
+        widthFactor: this.width,
+        heightFactor: this.height,
+        child: this.child,
       ),
-      )
-        
-      
-      );
+    ));
   }
-
 }

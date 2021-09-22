@@ -1,23 +1,22 @@
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:startup_namer/data_view/air_screen.dart';
 import 'package:startup_namer/home/home_view.dart';
 
-class BottomNav extends StatefulWidget{
+class BottomNav extends StatefulWidget {
   @override
   _BottomNavState createState() => _BottomNavState();
-  
 }
 
-class _BottomNavState extends State<BottomNav>{
+class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
   int badge = 0;
 
   PageController controller = PageController();
 
-  static const TextStyle optionStyle = 
+  static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  
+
   //List<Color> colors = [
   //  Colors.purple,
   //  Colors.pink,
@@ -27,16 +26,15 @@ class _BottomNavState extends State<BottomNav>{
 
   List<Widget> content = [
     HomeScreen(),
-     Text(
+    Text(
       'Settings',
       style: optionStyle,
     ),
     Text(
       'Profile',
       style: optionStyle,
-    ),   
+    ),
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,25 +42,20 @@ class _BottomNavState extends State<BottomNav>{
       child: Scaffold(
         body: SafeArea(
           child: PageView.builder(
-            onPageChanged: (page){
+            onPageChanged: (page) {
               setState(() {
                 _selectedIndex = page;
                 badge = badge + 1;
               });
             },
             controller: controller,
-            itemBuilder: (context, position){
-              return Container(
-                child: AirScreen()
-              );
+            itemBuilder: (context, position) {
+              return Container(child: AirScreen());
             },
-             itemCount: 4,
-
-
+            itemCount: 4,
           ),
           //child: _navOptions.elementAt(_selectedIndex),
         ),
-
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -75,7 +68,8 @@ class _BottomNavState extends State<BottomNav>{
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
               child: GNav(
                 rippleColor: Colors.grey[300]!,
                 hoverColor: Colors.grey[100]!,
@@ -87,10 +81,7 @@ class _BottomNavState extends State<BottomNav>{
                 tabBackgroundColor: Colors.grey[100]!,
                 color: Colors.black,
                 tabs: [
-                  GButton(
-                    icon: Icons.home_outlined,
-                    text: 'Home'
-                  ),
+                  GButton(icon: Icons.home_outlined, text: 'Home'),
                   GButton(
                     icon: Icons.settings_outlined,
                     text: 'Settings',
@@ -101,22 +92,17 @@ class _BottomNavState extends State<BottomNav>{
                   )
                 ],
                 selectedIndex: _selectedIndex,
-                onTabChange: (index){
+                onTabChange: (index) {
                   setState(() {
                     _selectedIndex = index;
                   });
                   controller.jumpToPage(index);
                 },
-
               ),
             ),
           ),
-
         ),
-
       ),
     );
   }
-  
 }
- 

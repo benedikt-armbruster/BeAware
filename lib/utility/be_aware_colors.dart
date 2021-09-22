@@ -1,6 +1,6 @@
-import 'dart:ui';
 
-class BeAwareColors{
+
+class BeAwareColors {
   static const int green = 0xFFb5ef8a;
   static const int etonblue = 0xFF7fc29b;
   static const int verdigris = 0xFF4fafa7;
