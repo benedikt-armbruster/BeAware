@@ -6,6 +6,7 @@ import 'package:startup_namer/utility/base_line_chart.dart';
 import 'package:startup_namer/utility/be_aware_colors.dart';
 import 'package:startup_namer/utility/data_view_layout.dart';
 
+
 class AirScreen extends StatelessWidget {
   //const AirView({Key? key}) : super(key: key);
 
@@ -62,8 +63,8 @@ class AirScreen extends StatelessWidget {
     return SafeArea(
         child: Column(children: [
       DataViewLayout(
-        upperHeight: 0.49,
-        lowerHeight: 0.29,
+        upperHeight: 0.45,
+        lowerHeight: 0.25,
         upperBg: Color(BeAwareColors.crayola),
         upperChild: Container(
           child: BaseLineChart(

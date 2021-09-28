@@ -7,6 +7,8 @@ class DataViewLayout extends StatelessWidget {
   final Color? lowerBg;
   final Widget upperChild;
   final Widget lowerChild;
+  final double upperPadTop;
+  final double lowerPadBottom;
 
   DataViewLayout(
       {required this.upperHeight,
@@ -14,18 +16,22 @@ class DataViewLayout extends StatelessWidget {
       this.upperBg,
       this.lowerBg,
       required this.upperChild,
-      required this.lowerChild});
+      required this.lowerChild,
+      this.upperPadTop = 0,
+      this.lowerPadBottom = 0,
+      });
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Column(children: [
+        child: Column(
+          children: [
       Row(
         children: [
           Container(
             height: MediaQuery.of(context).size.height * this.upperHeight,
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top: 24),
+            padding: EdgeInsets.only(top: this.upperPadTop),
             color: this.upperBg,
             child: this.upperChild,
           )
@@ -36,6 +42,7 @@ class DataViewLayout extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height * this.lowerHeight,
             width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(top: this.lowerPadBottom),
             color: this.lowerBg,
             child: this.lowerChild,
           )

@@ -1,38 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:startup_namer/data_view/data_view.dart';
+import 'package:startup_namer/diagnosis_view/diagnosis_view.dart';
 
 class RoundIconContainer extends StatelessWidget {
   final Color bgColor;
   final Widget? child;
   final IconData? icon;
   final Color? iconColor;
+  final String title;
 
   RoundIconContainer({
     required this.bgColor,
     this.child,
     this.icon,
     this.iconColor = Colors.white,
+    this.title = "",
   });
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
-      child: Container(
-        //height: 50,
-        //width: 50,
-        padding: EdgeInsets.all(12.0),
-        //margin: EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: this.bgColor,
-        ),
-        child: Icon(
-          this.icon,
-          color: this.iconColor,
-          size: 40,
-        ),
-      ),
-    );
+        child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+          InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  //MaterialPageRoute(builder: (context) => BottomNav()),
+                  MaterialPageRoute(
+                      builder: (context) => DiagnosisView()
+                          ),
+                );
+              },
+              child: new Ink(
+              //height: 50,
+              //width: 50,
+              padding: EdgeInsets.all(12.0),
+              //margin: EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: this.bgColor,
+              ),
+              child: Icon(
+                this.icon,
+                color: this.iconColor,
+                size: 40,
+              ),
+            ),),
+            Text(this.title),
+        ]));
   }
 }
 

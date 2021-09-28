@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:startup_namer/data_view/air_screen.dart';
 import 'package:startup_namer/data_view/light_screen.dart';
+import 'package:startup_namer/utility/be_aware_colors.dart';
 
 class DataView extends StatefulWidget {
   final int selectedPage;
@@ -30,6 +31,7 @@ class _DataViewState extends State<DataView> {
             length: 3,
             child: Scaffold(
               appBar: AppBar(
+                backgroundColor: Color(BeAwareColors.crayola),
                 bottom: TabBar(
                   tabs: [
                     Tab(text: 'Air'),
