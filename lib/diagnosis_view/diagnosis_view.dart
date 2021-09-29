@@ -26,6 +26,7 @@ class _DiagnosisViewState extends State<DiagnosisView> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: Color(BeAwareColors.crayola),
     appBar: AppBar(
       backgroundColor: Color(BeAwareColors.crayola),
     ),

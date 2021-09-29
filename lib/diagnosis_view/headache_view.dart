@@ -28,7 +28,7 @@ class _HeadacheViewState extends State<HeadacheView>{
         DataViewLayout(
           upperHeight: 0.5,
           lowerHeight: 0.3,
-          lowerBg: Color(BeAwareColors.crayola),
+          upperBg: Colors.white,
           upperChild: Stack(
             alignment: containerCenter,
             children: <Widget>[

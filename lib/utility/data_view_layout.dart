@@ -23,7 +23,7 @@ class DataViewLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Expanded(
         child: Column(
           children: [
       Row(
