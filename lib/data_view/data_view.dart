@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:startup_namer/data_view/air_screen.dart';
 import 'package:startup_namer/data_view/light_screen.dart';
+import 'package:startup_namer/data_view/posture_screen.dart';
 import 'package:startup_namer/utility/be_aware_colors.dart';
 
 class DataView extends StatefulWidget {
@@ -53,7 +54,7 @@ class _DataViewState extends State<DataView> {
                         return TabBarView(
                           children: [
                             AirScreen(),
-                            Text("Posture"),
+                            PieChartSample1(),
                             LightScreen(),
                             //PostureView(),
                             //LightView(),

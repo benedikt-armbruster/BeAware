@@ -74,12 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(children: [
             DataViewLayout(
               upperHeight: 0.7,
-              lowerHeight: 0.29,
+              lowerHeight: 0.20,
              // lowerBg: Colors.black12,
               upperChild: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("background.png"),
+                    image: AssetImage("assets/background.png"),
                     fit: BoxFit.contain,
                     //alignment: Alignment.topCenter,
                   ),
