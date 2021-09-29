@@ -163,22 +163,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       border: Border(
                         top: BorderSide(
                         color: Color(BeAwareColors.etonblue), 
-                        width: 1
+                        width: 4,
                         ),
                       ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [
-                          0.02,
-                          0.05,
-                        ],
-                        colors: [
-                          Color(BeAwareColors.etonblue),
-                          Colors.white,
-                          // Color.fromRGBO(0, 0, 0, 0.0),
-                        ],
-                      )
                     ),
               )
             ),
