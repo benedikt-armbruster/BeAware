@@ -44,51 +44,57 @@ class BaseLineChart extends StatelessWidget {
     return FutureBuilder<List<FlSpot>>(
       future: fetchDataFunction(),
       builder: (BuildContext context, AsyncSnapshot<List<FlSpot>> sensorData) {
-        return LineChart(
-          LineChartData(
-              gridData: FlGridData(show: false),
-              borderData: FlBorderData(
-                show: false,
-              ),
-              axisTitleData: FlAxisTitleData(
-                show: false,
-              ),
-              titlesData: FlTitlesData(
-                show: true,
-                bottomTitles: bottomTitle ?? defaultBottomTitles(),
-                topTitles: topTitle ?? SideTitles(showTitles: false),
-                rightTitles: rightTitle ?? SideTitles(showTitles: false),
-                leftTitles: leftTitle,
-              ),
-              lineTouchData: LineTouchData(touchTooltipData:
-                  LineTouchTooltipData(getTooltipItems: (items) {
-                return items
-                    .map((e) => LineTooltipItem(
-                        "${e.y}\n${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(e.x.toInt()))}",
-                        TextStyle(
-                          color: e.bar.colors[0],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        )))
-                    .toList(growable: false);
-              })),
-              lineBarsData: [
-                LineChartBarData(
-                    spots: sensorData.data,
-                    isCurved: false,
-                    colors: gradientColors,
-                    barWidth: 4,
-                    dotData: FlDotData(show: false),
-                    belowBarData: BarAreaData(
-                      show: false,
-                      colors: gradientColors
-                          .map((color) => color.withOpacity(0.1))
-                          .toList(),
-                    ))
-              ]),
-          swapAnimationDuration: Duration(milliseconds: 150), // Optional
-          swapAnimationCurve: Curves.linear,
-        );
+        if (sensorData.hasData && sensorData.data != null) {
+          return LineChart(
+            LineChartData(
+                gridData: FlGridData(show: false),
+                borderData: FlBorderData(
+                  show: false,
+                ),
+                axisTitleData: FlAxisTitleData(
+                  show: false,
+                ),
+                titlesData: FlTitlesData(
+                  show: true,
+                  bottomTitles: bottomTitle ?? defaultBottomTitles(),
+                  topTitles: topTitle ?? SideTitles(showTitles: false),
+                  rightTitles: rightTitle ?? SideTitles(showTitles: false),
+                  leftTitles: leftTitle,
+                ),
+                lineTouchData: LineTouchData(touchTooltipData:
+                    LineTouchTooltipData(getTooltipItems: (items) {
+                  return items
+                      .map((e) => LineTooltipItem(
+                          "${e.y}\n${DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(e.x.toInt()))}",
+                          TextStyle(
+                            color: e.bar.colors[0],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          )))
+                      .toList(growable: false);
+                })),
+                lineBarsData: [
+                  LineChartBarData(
+                      spots: sensorData.data,
+                      isCurved: false,
+                      colors: gradientColors,
+                      barWidth: 4,
+                      dotData: FlDotData(show: false),
+                      belowBarData: BarAreaData(
+                        show: false,
+                        colors: gradientColors
+                            .map((color) => color.withOpacity(0.1))
+                            .toList(),
+                      ))
+                ]),
+            swapAnimationDuration: Duration(milliseconds: 150), // Optional
+            swapAnimationCurve: Curves.linear,
+          );
+        } else {
+          return Center(
+              child: SizedBox(
+                  width: 60, height: 60, child: CircularProgressIndicator(color: Colors.white,)));
+        }
       },
     );
   }

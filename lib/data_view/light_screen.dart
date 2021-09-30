@@ -28,8 +28,8 @@ class LightScreen extends StatelessWidget {
     return SafeArea(
         child: Column(children: [
       DataViewLayout(
-        upperHeight: 0.49,
-        lowerHeight: 0.29,
+        upperHeight: 0.52,
+        lowerHeight: 0.2,
         upperBg: Color(BeAwareColors.crayola),
         upperChild: Container(
           child: BaseLineChart(
@@ -44,7 +44,7 @@ class LightScreen extends StatelessWidget {
                     .asFlSpotValues),
           ),
         ),
-        lowerChild: Container(child: Text("Lower")),
+        lowerChild: Container(child: Text("Light")),
       )
     ]));
   }

@@ -10,13 +10,15 @@ class SensorData {
   final String baseSensor;
   final String sensorName;
   final double value;
+  final String? additionalData;
 
   SensorData(
       {required this.id,
       required this.timestamp,
       required this.baseSensor,
       required this.sensorName,
-      required this.value});
+      required this.value,
+      this.additionalData});
 
   DateTime get timestampAsDateTime =>
       DateTime.fromMillisecondsSinceEpoch(timestamp.floor());
@@ -30,8 +32,8 @@ class SensorDataContainer {
   late final double maxValue;
 
   SensorDataContainer(this._sensorData) {
-    double minTimestamp = double.infinity;
-    double maxTimestamp = double.negativeInfinity;
+    double minTimestamp = double.maxFinite;
+    double maxTimestamp = 0.0;
     double minValue = double.infinity;
     double maxValue = double.negativeInfinity;
     for (SensorData data in _sensorData) {
@@ -44,8 +46,6 @@ class SensorDataContainer {
     this.maxTimestamp = maxTimestamp;
     this.minValue = minValue;
     this.maxValue = maxValue;
-    final maxT = DateTime.fromMillisecondsSinceEpoch(maxTimestamp.floor());
-    final minT = DateTime.fromMillisecondsSinceEpoch(minTimestamp.floor());
   }
 
   List<FlSpot> get asFlSpotValues => _sensorData

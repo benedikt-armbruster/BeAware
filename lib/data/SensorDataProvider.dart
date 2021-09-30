@@ -42,6 +42,9 @@ class SensorDataProvider {
   Future<SensorDataContainer> get colorTemperature =>
       getValues("tcs", "colorTemp");
 
+  Future<SensorDataContainer> get postures =>
+      getValues("jetson", "postures");
+
   SensorDataProvider._internal() {
     _initializationDone = _init();
   }
@@ -91,7 +94,8 @@ class SensorDataProvider {
             // Convert from seconds to milliseconds
             baseSensor: sensorData[i]['bs'],
             sensorName: sensorData[i]['sn'],
-            value: sensorData[i]['v']));
+            value: sensorData[i]['v'],
+        additionalData: sensorData[i]['a']));
   }
 
   reloadData(bool forceReload) async {

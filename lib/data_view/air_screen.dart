@@ -63,8 +63,8 @@ class AirScreen extends StatelessWidget {
     return SafeArea(
         child: Column(children: [
       DataViewLayout(
-        upperHeight: 0.45,
-        lowerHeight: 0.25,
+        upperHeight: 0.52,
+        lowerHeight: 0.2,
         upperBg: Color(BeAwareColors.crayola),
         upperChild: Container(
           child: BaseLineChart(
