@@ -138,7 +138,7 @@ void insertDataToJsonObject(JsonObject& doc) {
     doc["AIQ_ACCURACY"] = values.iaqAccuracy;
     //doc["TEMPERATURE2"] = values.temperature2;
     //return doc;
-   checkIAQ(values.iaq);
+   checkIAQ(values.staticIaq);
   } else {
     doc["sensor"] = "bme";
     doc["success"] = false;

@@ -5,9 +5,20 @@
 #include "Nicla_System.h"
 #include <ArduinoJson.h>
 
+void startWatchdog(){
+  NRF_WDT->CONFIG         = 0x01;     // Configure WDT to run when CPU is asleep
+  NRF_WDT->CRV            = 3932159; // 120 sec   // CRV = timeout * 32768 + 1
+  NRF_WDT->RREN           = 0x01;     // Enable the RR[0] reload register
+  NRF_WDT->TASKS_START    = 1;        // Start WDT  
+}
+
+void resetWatchdog(){
+NRF_WDT->RR[0] = WDT_RR_RR_Reload;
+}
 // Entry point for the example
 void setup(void)
 {
+  startWatchdog();
   nicla::begin();
   nicla::leds.begin();
   nicla::enable3V3LDO(); // turn on 3.3V power for external sensors
@@ -37,6 +48,7 @@ void loop(void)
   //delay(10000);
   // Don't know why, but we have to call this periodically to make sure the LDO stays on
   nicla::enable3V3LDO();
+  resetWatchdog();
   // read serial data 
    if (Serial.available() > 0) {
      int bytes = Serial.available();
