@@ -35,7 +35,12 @@ class AirScreen extends StatelessWidget {
       {String Function(double)? getText}) {
     return Scaffold(
         backgroundColor: Color(BeAwareColors.crayola),
-        body: BaseLineChart(
+      appBar: AppBar(
+          backgroundColor: Color(BeAwareColors.crayola),
+
+      ),
+          body: SafeArea(
+        child: BaseLineChart(
           bottomTitle: BaseLineChart.defaultBottomTitles(),
           leftTitle: _leftTitle(getText: getText),
           gradientColors: gradientColors,
@@ -44,7 +49,9 @@ class AirScreen extends StatelessWidget {
               .groupByAverageWithIntervalLength(Duration(minutes: 5))
               .roundValuesWithDecimalPlaces(1)
               .asFlSpotValues),
-        ));
+        )
+        )
+    );
   }
 
   SideTitles _leftTitle({String Function(double)? getText}) {
