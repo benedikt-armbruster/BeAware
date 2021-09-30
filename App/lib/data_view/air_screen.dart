@@ -17,7 +17,7 @@ class AirScreen extends StatelessWidget {
   Widget simpleTextButton(
       BuildContext context, Widget Function(BuildContext) onTap,
       {required Widget child}) {
-    return TextButton(
+    return OutlinedButton(
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
       ),
@@ -32,12 +32,12 @@ class AirScreen extends StatelessWidget {
 
   Widget baseLineChartForDataSource(
       Future<SensorDataContainer> Function() getData,
-      {String Function(double)? getText}) {
+      {String Function(double)? getText, String? title}) {
     return Scaffold(
         backgroundColor: Color(BeAwareColors.crayola),
       appBar: AppBar(
           backgroundColor: Color(BeAwareColors.crayola),
-
+        title: Text(title ?? ""),
       ),
           body: SafeArea(
         child: BaseLineChart(
@@ -96,12 +96,13 @@ class AirScreen extends StatelessWidget {
                     context,
                     (context) => baseLineChartForDataSource(
                         () => SensorDataProvider().temperature,
+                        title: "Temperature",
                         getText: (value) => "${value.toStringAsFixed(1)}C"),
-                    child: Text('Temperature')),
+                    child: Text('Temperature'),),
                 simpleTextButton(
                     context,
                     (context) => baseLineChartForDataSource(
-                        () => SensorDataProvider().co2Equivalent),
+                        () => SensorDataProvider().co2Equivalent, title: "CO2",),
                     child: Text("CO2")),
               ],
             ),
@@ -112,12 +113,12 @@ class AirScreen extends StatelessWidget {
                     context,
                     (context) => baseLineChartForDataSource(
                         () => SensorDataProvider().humidity,
-                        getText: (value) => "${value.toStringAsFixed(1)}%"),
+                        getText: (value) => "${value.toStringAsFixed(1)}%", title: "Humidity",),
                     child: Text('Humidity')),
                 simpleTextButton(
                     context,
                     (context) => baseLineChartForDataSource(
-                        () => SensorDataProvider().breathVocEquivalent),
+                        () => SensorDataProvider().breathVocEquivalent, title: "VOC"),
                     child: Text("VOC")),
               ],
             )

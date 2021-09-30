@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.1,
                   margin: EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: Text("Some Icons"),
+                  child: Text(""),
                 ),
                 Container(
                   //color: Colors.black38,
