@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:BeAware/settings/settings_view.dart';
 import 'package:BeAware/utility/be_aware_colors.dart';
 import 'package:BeAware/utility/data_container.dart';
 import 'package:BeAware/utility/data_view_layout.dart';
@@ -106,7 +107,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
               selectedIndex: 0,
               onTabChange: (index) {
-                // TODO
+                if (index == 1) {
+                  AppSettings.openSettings(context);
+                }
               },
             ),
           ),

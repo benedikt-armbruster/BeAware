@@ -1,3 +1,4 @@
+import 'package:BeAware/settings/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:BeAware/data_view/air_screen.dart';
@@ -26,10 +27,7 @@ class _BottomNavState extends State<BottomNav> {
 
   List<Widget> content = [
     HomeScreen(),
-    Text(
-      'Settings',
-      style: optionStyle,
-    ),
+    AppSettings(),
     Text(
       'Profile',
       style: optionStyle,
@@ -96,7 +94,7 @@ class _BottomNavState extends State<BottomNav> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  controller.jumpToPage(index);
+                    controller.jumpToPage(index);
                 },
               ),
             ),

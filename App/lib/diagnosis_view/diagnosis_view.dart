@@ -1,3 +1,4 @@
+import 'package:BeAware/settings/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:BeAware/diagnosis_view/headache_view.dart';
@@ -85,7 +86,11 @@ class _DiagnosisViewState extends State<DiagnosisView> {
                 setState(() {
                   _selectedIndex = index;
                 });
-                controller.jumpToPage(index);
+                if (index == 1) {
+                  AppSettings.openSettings(context);
+                }else {
+                  controller.jumpToPage(index);
+                }
               },
             ),
           ),

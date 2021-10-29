@@ -1,3 +1,4 @@
+import 'package:BeAware/settings/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:BeAware/data_view/air_screen.dart';
@@ -99,6 +100,10 @@ class _DataViewState extends State<DataView> {
                       ],
                       selectedIndex: _selectedIndex,
                       onTabChange: (index) {
+                        if (index == 1) {
+                          AppSettings.openSettings(context);
+                          return;
+                        }
                         setState(() {
                           _selectedIndex = index;
                         });

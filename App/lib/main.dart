@@ -3,9 +3,15 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:BeAware/home/home_view.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Settings.init(
+    cacheProvider: SharePreferenceCache(),
+  ).then((value) => runApp(MyApp()));
+}
+
 
 class MyApp extends StatelessWidget {
   @override

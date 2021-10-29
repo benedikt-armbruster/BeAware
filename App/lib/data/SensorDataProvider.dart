@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:BeAware/settings/SettingsProvider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,8 +43,7 @@ class SensorDataProvider {
   Future<SensorDataContainer> get colorTemperature =>
       getValues("tcs", "colorTemp");
 
-  Future<SensorDataContainer> get postures =>
-      getValues("jetson", "postures");
+  Future<SensorDataContainer> get postures => getValues("jetson", "postures");
 
   SensorDataProvider._internal() {
     _initializationDone = _init();
@@ -54,8 +54,18 @@ class SensorDataProvider {
     return SharedPreferences.getInstance().then((prefs) => {
           if (prefs.containsKey(Constants.shared_prefs_sensor_json_key))
             {
-              data = jsonDecode(
-                  prefs.getString(Constants.shared_prefs_sensor_json_key)!)
+              if (prefs
+                      .getString(Constants.shared_prefs_sensor_json_key)!
+                      .isEmpty ||
+                  prefs
+                      .getString(Constants.shared_prefs_sensor_json_key)!
+                      .startsWith(RegExp(r"^[a-zA-Z0-9]")))
+                {loadMockData().then((values) => data = values)}
+              else
+                {
+                  data = jsonDecode(
+                      prefs.getString(Constants.shared_prefs_sensor_json_key)!)
+                }
             }
           else
             {loadMockData().then((values) => data = values)}
@@ -95,7 +105,7 @@ class SensorDataProvider {
             baseSensor: sensorData[i]['bs'],
             sensorName: sensorData[i]['sn'],
             value: sensorData[i]['v'],
-        additionalData: sensorData[i]['a']));
+            additionalData: sensorData[i]['a']));
   }
 
   reloadData(bool forceReload) async {
@@ -108,7 +118,7 @@ class SensorDataProvider {
     http.Response response;
     try {
       response = await http
-          .get(Uri.parse(Constants.server_sensor_values_json_url))
+          .get(Uri.parse(SettingsProvider.serverSensorValuesJsonUrl))
           .timeout(Duration(seconds: 5));
     } on IOException catch (e) {
       print("Error while fetching sensor data from server $e");
