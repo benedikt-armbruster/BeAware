@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:startup_namer/data_view/air_screen.dart';
-import 'package:startup_namer/home/home_view.dart';
+import 'package:BeAware/data_view/air_screen.dart';
+import 'package:BeAware/home/home_view.dart';
 
 class BottomNav extends StatefulWidget {
   @override

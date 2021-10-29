@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:startup_namer/data/model/SensorData.dart';
+import 'package:BeAware/data/model/SensorData.dart';
 
 import '../Constants.dart' as Constants;
 

@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:startup_namer/utility/be_aware_colors.dart';
-import 'package:startup_namer/utility/data_view_layout.dart';
+import 'package:BeAware/utility/be_aware_colors.dart';
+import 'package:BeAware/utility/data_view_layout.dart';
 
 class HeadacheView extends StatefulWidget{
   _HeadacheViewState createState() => _HeadacheViewState();

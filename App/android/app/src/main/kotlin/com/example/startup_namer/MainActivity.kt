@@ -1,4 +1,4 @@
-package com.example.startup_namer
+package com.example.BeAware
 
 import io.flutter.embedding.android.FlutterActivity
 

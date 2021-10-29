@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:startup_namer/diagnosis_view/headache_view.dart';
-import 'package:startup_namer/utility/be_aware_colors.dart';
+import 'package:BeAware/diagnosis_view/headache_view.dart';
+import 'package:BeAware/utility/be_aware_colors.dart';
 
 
 class DiagnosisView extends StatefulWidget {

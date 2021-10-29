@@ -1,10 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:startup_namer/data/SensorDataProvider.dart';
-import 'package:startup_namer/data/model/SensorData.dart';
-import 'package:startup_namer/utility/base_line_chart.dart';
-import 'package:startup_namer/utility/be_aware_colors.dart';
-import 'package:startup_namer/utility/data_view_layout.dart';
+import 'package:BeAware/data/SensorDataProvider.dart';
+import 'package:BeAware/data/model/SensorData.dart';
+import 'package:BeAware/utility/base_line_chart.dart';
+import 'package:BeAware/utility/be_aware_colors.dart';
+import 'package:BeAware/utility/data_view_layout.dart';
 
 class LightScreen extends StatelessWidget {
   //const AirView({Key? key}) : super(key: key);

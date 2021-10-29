@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:startup_namer/home/home_view.dart';
+import 'package:BeAware/home/home_view.dart';
 
 void main() => runApp(MyApp());
 

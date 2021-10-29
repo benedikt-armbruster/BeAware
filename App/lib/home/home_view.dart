@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:startup_namer/utility/be_aware_colors.dart';
-import 'package:startup_namer/utility/data_container.dart';
-import 'package:startup_namer/utility/data_view_layout.dart';
-import 'package:startup_namer/utility/icon_container.dart';
+import 'package:BeAware/utility/be_aware_colors.dart';
+import 'package:BeAware/utility/data_container.dart';
+import 'package:BeAware/utility/data_view_layout.dart';
+import 'package:BeAware/utility/icon_container.dart';
 
 class HomeScreen extends StatefulWidget {
   // HomeScreen({ Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:startup_namer/data_view/data_view.dart';
-import 'package:startup_namer/diagnosis_view/diagnosis_view.dart';
+import 'package:BeAware/data_view/data_view.dart';
+import 'package:BeAware/diagnosis_view/diagnosis_view.dart';
 
 class RoundIconContainer extends StatelessWidget {
   final Color bgColor;

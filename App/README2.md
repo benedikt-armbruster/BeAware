@@ -1,4 +1,4 @@
-# startup_namer
+# BeAware
 
 A new Flutter project.
 

@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:startup_namer/utility/be_aware_colors.dart';
+import 'package:BeAware/utility/be_aware_colors.dart';
 
 class BaseLineChart extends StatelessWidget {
   final SideTitles? leftTitle;

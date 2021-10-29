@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:startup_namer/data/SensorDataProvider.dart';
+import 'package:BeAware/data/SensorDataProvider.dart';
 
 class Indicator extends StatelessWidget {
   final Color color;
