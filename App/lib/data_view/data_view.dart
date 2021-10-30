@@ -19,7 +19,16 @@ class DataView extends StatefulWidget {
 class _DataViewState extends State<DataView> {
   final int selectedPage;
   int _selectedIndex = 0;
+  int _bottomNavSelectedView = 0;
   int badge = 0;
+
+  Widget getView({required int index, required Widget home}) {
+    if (index == 1) {
+      return AppSettings();
+    } else {
+      return home;
+    }
+  }
 
   PageController controller = PageController();
 
@@ -28,7 +37,10 @@ class _DataViewState extends State<DataView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: DefaultTabController(
+        child: Scaffold(
+      body: getView(
+        index: this._bottomNavSelectedView,
+        home: DefaultTabController(
             initialIndex: this.selectedPage,
             length: 3,
             child: Scaffold(
@@ -62,57 +74,52 @@ class _DataViewState extends State<DataView> {
                           ],
                         );
                       })),
-              bottomNavigationBar: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 20,
-                      color: Colors.black.withOpacity(.1),
-                    )
-                  ],
+            )),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 20,
+              color: Colors.black.withOpacity(.1),
+            )
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+            child: GNav(
+              rippleColor: Colors.grey[300]!,
+              hoverColor: Colors.grey[100]!,
+              gap: 8,
+              activeColor: Colors.black,
+              iconSize: 24,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: Duration(milliseconds: 400),
+              tabBackgroundColor: Colors.grey[100]!,
+              color: Colors.black,
+              tabs: [
+                GButton(icon: Icons.home_outlined, text: 'Home'),
+                GButton(
+                  icon: Icons.settings_outlined,
+                  text: 'Settings',
                 ),
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0, vertical: 8),
-                    child: GNav(
-                      rippleColor: Colors.grey[300]!,
-                      hoverColor: Colors.grey[100]!,
-                      gap: 8,
-                      activeColor: Colors.black,
-                      iconSize: 24,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      duration: Duration(milliseconds: 400),
-                      tabBackgroundColor: Colors.grey[100]!,
-                      color: Colors.black,
-                      tabs: [
-                        GButton(icon: Icons.home_outlined, text: 'Home'),
-                        GButton(
-                          icon: Icons.settings_outlined,
-                          text: 'Settings',
-                        ),
-                        GButton(
-                          icon: Icons.person_outlined,
-                          text: 'Profile',
-                        )
-                      ],
-                      selectedIndex: _selectedIndex,
-                      onTabChange: (index) {
-                        if (index == 1) {
-                          AppSettings.openSettings(context);
-                          return;
-                        }
-                        setState(() {
-                          _selectedIndex = index;
-                        });
-                        controller.jumpToPage(index);
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            )));
+                GButton(
+                  icon: Icons.person_outlined,
+                  text: 'Profile',
+                )
+              ],
+              selectedIndex: 0,
+              onTabChange: (index) {
+                setState(() {
+                  _bottomNavSelectedView = index;
+                });
+              },
+            ),
+          ),
+        ),
+      ),
+    ));
   }
 }
