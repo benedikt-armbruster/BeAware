@@ -13,6 +13,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  Widget getView({required int index, required Widget home}) {
+    if (index == 1) {
+      return AppSettings();
+    } else {
+      return home;
+    }
+  }
+
   var customRowTop = Row(children: <Widget>[
     Expanded(
       flex: 5,
@@ -107,16 +117,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
               selectedIndex: 0,
               onTabChange: (index) {
-                if (index == 1) {
-                  AppSettings.openSettings(context);
-                }
+                setState(() {
+                  _selectedIndex = index;
+                });
               },
             ),
           ),
         ),
       ),
         body: SafeArea(
-            child: Column(children: [
+            child: getView(index: _selectedIndex,
+                home: Column(children: [
       DataViewLayout(
           upperHeight: 0.69,
           lowerHeight: 0.18,
@@ -217,6 +228,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ])))
-    ])));
+    ])
+        )
+        )
+    );
   }
 }

@@ -29,7 +29,7 @@ class _AppSettingsState extends State<AppSettings> {
                 title: 'Dev Settings',
                 subtitle: '',
                 child: SettingsScreen(
-                  title: 'App Settings',
+                  title: 'Dev Settings',
                   children: <Widget>[
                     TextInputSettingsTile(
                       title: 'Server Address',
@@ -45,7 +45,7 @@ class _AppSettingsState extends State<AppSettings> {
                 title: 'Posture Calibration',
                 subtitle: 'Calibrate Camera',
                 child: SettingsScreen(
-                  title: 'App Settings',
+                  title: 'Posture Calibration',
                   children: <Widget>[
                     TextButton(
                       onPressed: () => null,
