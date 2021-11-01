@@ -5,8 +5,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:BeAware/home/home_view.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp]);
   Settings.init(
     cacheProvider: SharePreferenceCache(),
   ).then((value) => runApp(MyApp()));
