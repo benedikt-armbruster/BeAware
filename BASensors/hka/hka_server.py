@@ -45,7 +45,7 @@ class HKServer:
 
         aiq_acc = AirQualitySensor(driver, 'AirQualitySensor')
         bridge.add_accessory(aiq_acc)
-        handler['bme']['IAQ'] = aiq_acc.set_value_aiq
+        handler['bme']['STATIC_IAQ'] = aiq_acc.set_value_aiq
         handler['bme']['CO2_EQUIVALENT'] = aiq_acc.set_value_co2
         handler['bme']['BREATH_VOC_EQUIVALENT'] = aiq_acc.set_value_voc
 

@@ -68,13 +68,12 @@ class AirQualitySensor(Accessory):
             iaq_index = 5
         self.char_aqi.set_value(iaq_index)
 
-    def set_value_voc(self, value):
-        # TODO map to 0 to 1000
+    def set_value_voc(self, ppm):
+        # convert from ppm to micrograms per cubic meter
+        # Formula taken from https://www.teesing.com/en/page/library/tools/ppm-mg3-converter
+        value = 40.9 * ppm * 78.9516
+
         self.char_voc.set_value(value)
 
-    def set_value_co2(self, value):
-        # TODO map to 0 to 100000
-        self.char_co2.set_value(value)
-
-    def _get_service_and_characteristic_name(self):
-        raise NotImplemented
+    def set_value_co2(self, ppm):
+        self.char_co2.set_value(ppm)
