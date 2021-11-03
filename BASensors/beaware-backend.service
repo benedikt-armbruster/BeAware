@@ -1,0 +1,14 @@
+[Unit]
+Description=BeAware Sensor Data Backend-Service
+After=network-online.target
+Wants=network-online.target
+[Service]
+Restart=always
+Type=simple
+ExecStart=/usr/bin/python3 /home/ubuntu/BASensors/main.py
+WorkingDirectory=/home/ubuntu/BASensors
+User=ubuntu
+KillSignal=SIGINT
+Environment=
+[Install]
+WantedBy=multi-user.target
