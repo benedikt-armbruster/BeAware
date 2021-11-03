@@ -1,6 +1,8 @@
 from pyhap.accessory import Accessory, Bridge
 from pyhap.const import CATEGORY_SENSOR
 
+TEMP_OFFSET = -4.0
+
 
 class SimpleSensor(Accessory):
     category = CATEGORY_SENSOR
@@ -20,6 +22,9 @@ class SimpleSensor(Accessory):
 
 
 class TemperatureSensor(SimpleSensor):
+    def set_value(self, value):
+        self.characteristic.set_value(value + TEMP_OFFSET)
+
     def _get_service_and_characteristic_name(self):
         return 'TemperatureSensor', 'CurrentTemperature'
 
@@ -51,7 +56,6 @@ class AirQualitySensor(Accessory):
         self.char_co2 = service.configure_char('CarbonDioxideLevel')
 
     def set_value_aiq(self, iaq):
-        # TODO map to 1 to 5
         if iaq <= 50.0:
             # Excellent
             iaq_index = 1
